@@ -25,6 +25,11 @@
 
         <activity android:name=".ActivityConsultas"></activity>
 
+        <activity android:name=".ActivityBajas"></activity>
+
+        <activity android:name=".ActivityModificar"></activity>
+
+
     </application>
 
 </manifest>

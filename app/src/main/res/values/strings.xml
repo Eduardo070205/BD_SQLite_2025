@@ -5,4 +5,14 @@
     <string name="txt_btn_cambios">MODIFICAR</string>
     <string name="txt_btn_consultas">CONSULTAR</string>
     <string name="txt_titulo_altas">Agregar alumno</string>
+    <string name="txt_titulo_bajas">Eliminar Alumnos</string>
+    <string name="txt_id_eliminar">ID Alumno</string>
+    <string name="btn_restaurar">Restaurar</string>
+    <string name="btn_buscar">Buscar</string>
+    <string name="btn_eliminar">Eliminar</string>
+    <string name="txt_titulo_Modificar">Modificar Alumno</string>
+    <string name="txt_num_control">Número de Control</string>
+    <string name="txt_nombre">Nombre</string>
+    <string name="btn_actualizar">Actualizar</string>
+
 </resources>

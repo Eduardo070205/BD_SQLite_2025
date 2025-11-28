@@ -39,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.btn_consultar){
 
             i = new Intent(this, ActivityConsultas.class);
+        } else if (v.getId() == R.id.btn_bajas) {
+
+            i = new Intent(this, ActivityBajas.class);
+
+        }else if (v.getId() == R.id.btn_modificar) {
+
+            i = new Intent(this, ActivityModificar.class);
+
         }
 
 

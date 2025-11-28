@@ -2,7 +2,6 @@ package com.example.bd_sqlite_2025;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import db.EscuelaBD;
 import entities.Alumno;
 
-public class ActivityAltas extends Activity {
+public class ActivityModificar extends Activity {
 
     private RecyclerView recyclerView;
 
@@ -26,33 +25,34 @@ public class ActivityAltas extends Activity {
 
     EscuelaBD bd;
 
-    ArrayList<Alumno> datos = null;
+    EditText cajaIdAlumno, cajaNombre;
 
-    EditText cajaNumControl, cajaNombre;
+    ArrayList<Alumno> datos = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_altas);
+        setContentView(R.layout.activity_modificaciones);
 
-        recyclerView = findViewById(R.id.recyclerAltas);
+        cajaIdAlumno = findViewById(R.id.cajaModificarNumControl);
+
+        cajaNombre = findViewById(R.id.cajaModificarNombre);
+
+        bd = EscuelaBD.getAppDatabase(this);
+
+        recyclerView = findViewById(R.id.recyclerActualizar);
+
         recyclerView.setHasFixedSize(true);
-
 
         layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
 
-        bd = EscuelaBD.getAppDatabase(this);
-
-        cajaNumControl = findViewById(R.id.caja_num_control);
-        cajaNombre = findViewById(R.id.caja_nombre);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 datos = (ArrayList<Alumno>) bd.alumnoDAO().mostrarTodos();
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -68,26 +68,34 @@ public class ActivityAltas extends Activity {
 
     }
 
-    public void agregarAlumno(View v){
-
-        String nc = cajaNumControl.getText().toString();
-
-        String n = cajaNombre.getText().toString().toUpperCase();
-
-        Alumno alumno = new Alumno(nc, n);
-
-        EscuelaBD bd = EscuelaBD.getAppDatabase(getBaseContext());
-
-        //
+    public void cargarDatos(View v){
 
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                bd.alumnoDAO().agregarAlumno(alumno);
-                Log.i("MSJ=>", "Inserccion Correcta");
+                datos = (ArrayList<Alumno>) bd.alumnoDAO().mostrarPorNoControl(cajaIdAlumno.getText().toString());
+
+                cajaNombre.setText(datos.get(0).getNombre());
+
+            }
+        }).start();
+
+    }
+
+    public void actualizarDatos(View v){
+
+        String numControl = cajaIdAlumno.getText().toString(), nombre = cajaNombre.getText().toString().toUpperCase();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                int numFilas = bd.alumnoDAO().actualizarAlumnoPorNumControl(nombre, numControl);
 
                 datos = (ArrayList<Alumno>) bd.alumnoDAO().mostrarTodos();
+
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -96,28 +104,30 @@ public class ActivityAltas extends Activity {
                         adapter = new CustomAdapter(datos);
                         recyclerView.setAdapter(adapter);
 
-                        Toast.makeText(getBaseContext(), "Insercción correcta", Toast.LENGTH_LONG).show();
+                        if (numFilas == 1){
+
+                            Toast.makeText(getBaseContext(), "Actualización correcta", Toast.LENGTH_LONG).show();
+
+                        }else{
+
+                            Toast.makeText(getBaseContext(), "Actualización Incorrecta", Toast.LENGTH_LONG).show();
+
+                        }
+
 
                     }
                 });
-
-
             }
         }).start();
-
-
 
     }
 
     public void restablecer(View v){
 
         cajaNombre.setText("");
-        cajaNumControl.setText("");
+        cajaIdAlumno.setText("");
 
 
     }
 
-
-
 }
-

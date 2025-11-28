@@ -28,7 +28,7 @@ public interface AlumnoDAO {
     public void eliminarAlumnos(Alumno alumno);
 
     @Query("DELETE FROM alumno WHERE num_control=:nc")
-    public void eliminarAlumnoPorNumControl(String nc);
+    public int eliminarAlumnoPorNumControl(String nc);
 
     //----------------------------------- CAMBIOS ------------------------------
 
@@ -36,7 +36,7 @@ public interface AlumnoDAO {
     public void actualizarAlumno(Alumno alumno);
 
     @Query("UPDATE alumno SET nombre =:n WHERE num_control=:nc") //En set van todos lo campos a cambiar
-    public void actualizarAlumnoPorNumControl(String n, String nc);
+    public int actualizarAlumnoPorNumControl(String n, String nc);
 
 
     //----------------------------------- CONSULTAS ------------------------------
@@ -46,5 +46,8 @@ public interface AlumnoDAO {
 
     @Query("SELECT * FROM alumno WHERE nombre  LIKE :n || '%'")
     public List<Alumno> mostrarPorNombre(String n);
+
+    @Query("SELECT * FROM alumno WHERE num_control = :nc")
+    public List<Alumno> mostrarPorNoControl(String nc);
 
 }
